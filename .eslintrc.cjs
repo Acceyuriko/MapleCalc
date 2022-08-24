@@ -23,5 +23,6 @@ module.exports = {
   root: true,
   rules: {
     'prettier/prettier': 'error',
+    '@typescript-eslint/no-non-null-assertion': 0,
   },
 };
