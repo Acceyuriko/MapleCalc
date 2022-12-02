@@ -8,17 +8,19 @@ import {
 } from 'react-router-dom';
 import { Layout, Menu, MenuProps } from 'antd';
 import { Home } from './home';
+import { FindDiff } from './find-diff';
 import './App.less';
 
 const routes: (RouteObject & { name?: string })[] = [
   {
-    path: '/',
-    element: <Navigate to='/home' />,
-  },
-  {
     name: '我的角色',
     path: '/home',
     element: <Home />,
+  },
+  {
+    name: '找茬',
+    path: '/find-diff',
+    element: <FindDiff />,
   },
 ];
 
@@ -26,12 +28,14 @@ const mapRoutesToMenu = () => {
   return routes.map((i) => ({
     key: i.path,
     label: <Link to={i.path!}>{i.name}</Link>,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  })) as any as MenuProps['items'];
+  })) as unknown as Exclude<MenuProps['items'], undefined>;
 };
 
 function App() {
-  const routesElement = useRoutes(routes);
+  const routesElement = useRoutes([
+    { path: '/', element: <Navigate to='/home' /> },
+    ...routes,
+  ]);
   const location = useLocation();
 
   return (

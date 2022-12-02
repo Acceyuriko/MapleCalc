@@ -11,4 +11,7 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    'process.browser': 'true',
+  },
 });
