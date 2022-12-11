@@ -9,6 +9,7 @@ import {
 import { Layout, Menu, MenuProps } from 'antd';
 import { Home } from './home';
 import { FindDiff } from './find-diff';
+import { OZ } from './oz';
 import './App.less';
 
 const routes: (RouteObject & { name?: string })[] = [
@@ -21,6 +22,11 @@ const routes: (RouteObject & { name?: string })[] = [
     name: '找茬',
     path: '/find-diff',
     element: <FindDiff />,
+  },
+  {
+    name: '爬塔',
+    path: '/oz',
+    element: <OZ />,
   },
 ];
 
