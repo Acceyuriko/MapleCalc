@@ -1,3 +1,25 @@
 .oz {
   padding: 24px 24px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  .operations {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    .floor {
+      font-size: 32px;
+      font-weight: bold;
+    }
+  }
+  .video-container {
+    position: relative;
+    transform-origin: 0 0;
+    .map {
+      position: absolute;
+    }
+  }
+  #canvas {
+    display: none;
+  }
 }

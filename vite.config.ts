@@ -14,5 +14,6 @@ export default defineConfig({
   },
   define: {
     'process.browser': 'true',
+    ENV: JSON.stringify('development'),
   },
 });

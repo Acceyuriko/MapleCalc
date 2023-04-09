@@ -60,6 +60,21 @@ function App() {
         />
       </Layout.Sider>
       <Layout.Content className='content'>{routesElement}</Layout.Content>
+      {/* <div */}
+      {/*   style={{ */}
+      {/*     position: 'fixed', */}
+      {/*     top: 0, */}
+      {/*     left: 0, */}
+      {/*     right: 0, */}
+      {/*     bottom: 0, */}
+      {/*     pointerEvents: 'none', */}
+      {/*     background: */}
+      {/*       `url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='100px' width='100px'>` + */}
+      {/*       `<text transform='translate(20, 100) rotate(-45)' fill='rgba(45,45,45, 0.5)' font-size='12' >` + */}
+      {/*       'QQ 285243000' + */}
+      {/*       '</text></svg>")', */}
+      {/*   }} */}
+      {/* ></div> */}
     </Layout>
   );
 }
