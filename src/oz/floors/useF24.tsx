@@ -38,22 +38,22 @@ export const useF24 = ({
     } else {
       result.current = {
         recognize: async (image, ocr, rect) => {
-          let processed = await promisify(image.crop.bind(image))(
+          await promisify(image.crop.bind(image))(
             rect.left,
             rect.top,
             rect.width,
             rect.height,
           );
 
-          processed = await promisify(image.invert.bind(image))();
-          processed = await promisify(image.threshold.bind(image))({
+          await promisify(image.invert.bind(image))();
+          await promisify(image.threshold.bind(image))({
             max: 100,
           });
 
           (document.getElementById('debug-24') as HTMLImageElement).src =
-            await processed.getBase64Async('image/png');
+            await image.getBase64Async('image/png');
 
-          const blob = await processed.getBufferAsync('image/png');
+          const blob = await image.getBufferAsync('image/png');
           const res = await ocr!.recognize(blob);
 
           const found = TEXT_CLUE_24.reduce(

@@ -5,6 +5,7 @@ import Jimp from 'jimp/browser/lib/jimp';
 import { Rect } from './rect';
 import { useF23 } from './floors/useF23';
 import { useF24 } from './floors/useF24';
+import { useF39 } from './floors/useF39';
 import { promisify } from '../utils/helper';
 
 import './index.less';
@@ -18,6 +19,7 @@ export interface RectSettings {
   videoScale: number;
   map23: Rectangle;
   text24: Rectangle;
+  text39: Rectangle;
 }
 
 export const OZ = () => {
@@ -50,6 +52,12 @@ export const OZ = () => {
             left: 290,
             width: 900,
             height: 28,
+          },
+          text39: {
+            top: 313,
+            left: 580,
+            width: 342,
+            height: 171,
           },
         },
   );
@@ -94,6 +102,17 @@ export const OZ = () => {
     onRectChange: useCallback(
       (value) => {
         onRectSettingsChange({ text24: value });
+      },
+      [onRectSettingsChange],
+    ),
+  });
+
+  const f39 = useF39({
+    currentFloor,
+    textRect: rectSettings.text39,
+    onRectChange: useCallback(
+      (value) => {
+        onRectSettingsChange({ text39: value });
       },
       [onRectSettingsChange],
     ),
@@ -154,7 +173,7 @@ export const OZ = () => {
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
         await worker.setParameters({
-          tessedit_char_whitelist: ` 0123456789abcdefghijklmnopqrstuvwxvyABCDEFGHIJKLMNOPQRSTUVWXVY,.?'":-!`,
+          tessedit_char_whitelist: ` 1234567890abcdefghijklmnopqrstuvwxvyABCDEFGHIJKLMNOPQRSTUVWXVY,.?'":-!`,
         });
         setOcr(worker);
       })
@@ -188,10 +207,24 @@ export const OZ = () => {
 
       Jimp.read(canvas.toDataURL())
         .then(async (image) => {
-          const blob = await image.getBufferAsync('image/png');
-          const res = await ocr!.recognize(blob, {
-            rectangle: rectSettingsRef.current.floor,
+          const cloned = await promisify(image.clone.bind(image))();
+          await promisify(cloned.crop.bind(cloned))(
+            rectSettingsRef.current.floor.left,
+            rectSettingsRef.current.floor.top,
+            rectSettingsRef.current.floor.width,
+            rectSettingsRef.current.floor.height,
+          );
+
+          await promisify(cloned.scale.bind(cloned))(2);
+          await promisify(cloned.threshold.bind(cloned))({
+            max: 150,
           });
+
+          (document.getElementById('debug-floor') as HTMLImageElement).src =
+            await cloned.getBase64Async('image/png');
+
+          const blob = await cloned.getBufferAsync('image/png');
+          const res = await ocr!.recognize(blob);
           const match = res.data.text.match(/Undersea.*?(\d+)/i);
           if (!match?.[1]) {
             return;
@@ -209,6 +242,14 @@ export const OZ = () => {
               rectSettingsRef.current.text24,
             );
           }
+          if (currentFloorRef.current === 39) {
+            const cloned = await promisify(image.clone.bind(image))();
+            await f39.current?.recognize(
+              cloned,
+              ocr!,
+              rectSettingsRef.current.text39,
+            );
+          }
         })
         .catch((e: Error) => {
           console.error('failed to recognize', e);
@@ -221,7 +262,7 @@ export const OZ = () => {
         });
     };
     captureFrame();
-  }, [ocr, setCurrentFloor, f24]);
+  }, [ocr, setCurrentFloor, f24, f39]);
 
   if (!ocr) {
     return (
@@ -243,9 +284,12 @@ export const OZ = () => {
   return (
     <div className='oz'>
       <div className='operations'>
-        <div className='floor'>Current Floor: {currentFloor}</div>
+        <div className='floor'>
+          Current Floor: {currentFloor} <img id='debug-floor' />
+        </div>
         {f23?.slider}
-        {f24?.current?.content}
+        {f24.current?.content}
+        {f39.current?.content}
         <Button onClick={stopCapture}>stop capture</Button>
       </div>
       <div
@@ -273,6 +317,7 @@ export const OZ = () => {
         />
         {f23?.videoDecorator}
         {f24.current?.videoDecorator}
+        {f39.current?.videoDecorator}
       </div>
       <canvas id='canvas' ref={canvasRef} />
     </div>
