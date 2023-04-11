@@ -29,38 +29,38 @@ export const OZ = () => {
 
   const [stream, setStream] = useState<MediaStream>();
   const [ocr, setOcr] = useState<Worker>();
+  const [videoVisible, setVideoVisible] = useState(true);
 
-  const [rectSettings, setRectSettings] = useState<RectSettings>(
-    localStorage.getItem(KEY_RECT_SETTINGS)
+  const [rectSettings, setRectSettings] = useState<RectSettings>({
+    floor: {
+      top: 58,
+      left: 705,
+      width: 84,
+      height: 25,
+    },
+    videoScale: 5,
+    map23: {
+      top: 64,
+      left: 26,
+      width: 278,
+      height: 126,
+    },
+    text24: {
+      top: 233,
+      left: 290,
+      width: 900,
+      height: 28,
+    },
+    text39: {
+      top: 313,
+      left: 580,
+      width: 342,
+      height: 171,
+    },
+    ...(localStorage.getItem(KEY_RECT_SETTINGS)
       ? JSON.parse(localStorage.getItem(KEY_RECT_SETTINGS)!)
-      : {
-          floor: {
-            top: 58,
-            left: 705,
-            width: 84,
-            height: 25,
-          },
-          videoScale: 5,
-          map23: {
-            top: 64,
-            left: 26,
-            width: 278,
-            height: 126,
-          },
-          text24: {
-            top: 233,
-            left: 290,
-            width: 900,
-            height: 28,
-          },
-          text39: {
-            top: 313,
-            left: 580,
-            width: 342,
-            height: 171,
-          },
-        },
-  );
+      : {}),
+  });
   const rectSettingsRef = useRef(rectSettings);
 
   const [currentFloor, reactSetCurrentFloor] = useState(0);
@@ -292,11 +292,24 @@ export const OZ = () => {
         {f39.current?.content}
         <Button onClick={stopCapture}>stop capture</Button>
       </div>
+      {stream && ![23, 48].includes(currentFloor) && (
+        <div>
+          <Button
+            onClick={() => {
+              setVideoVisible((pre) => !pre);
+            }}
+          >
+            {videoVisible ? 'hide' : 'show'} video
+          </Button>
+        </div>
+      )}
       <div
         id='video-container'
         className='video-container'
         style={{
           ...f23?.videoStyle,
+          display:
+            videoVisible || [23, 48].includes(currentFloor) ? 'flex' : 'none',
         }}
       >
         <video
