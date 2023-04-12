@@ -47,8 +47,12 @@ export const useF39 = ({
 
           await promisify(image.scale.bind(image))(3);
 
-          (document.getElementById('debug-39') as HTMLImageElement).src =
-            await image.getBase64Async('image/png');
+          const debug39 = document.getElementById(
+            'debug-39',
+          ) as HTMLImageElement;
+          if (debug39) {
+            debug39.src = await image.getBase64Async('image/png');
+          }
 
           const blob = await image.getBufferAsync('image/png');
           const {

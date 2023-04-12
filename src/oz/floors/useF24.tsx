@@ -50,8 +50,12 @@ export const useF24 = ({
             max: 100,
           });
 
-          (document.getElementById('debug-24') as HTMLImageElement).src =
-            await image.getBase64Async('image/png');
+          const debug24 = document.getElementById(
+            'debug-24',
+          ) as HTMLImageElement;
+          if (debug24) {
+            debug24.src = await image.getBase64Async('image/png');
+          }
 
           const blob = await image.getBufferAsync('image/png');
           const res = await ocr!.recognize(blob);

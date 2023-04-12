@@ -14,7 +14,13 @@
   }
   .video-container {
     position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
     transform-origin: 0 0;
+    > video {
+      flex-shrink: 0;
+    }
     .map {
       position: absolute;
     }

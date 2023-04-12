@@ -199,6 +199,8 @@ export const OZ = () => {
     const canvas = canvasRef.current!;
     canvas.width = VIDEO_WIDTH;
     canvas.height = (video.videoHeight * VIDEO_WIDTH) / video.videoWidth;
+    video.style.width = canvas.width + 'px';
+    video.style.height = canvas.height + 'px';
 
     const captureFrame = () => {
       canvas
@@ -220,8 +222,12 @@ export const OZ = () => {
             max: 150,
           });
 
-          (document.getElementById('debug-floor') as HTMLImageElement).src =
-            await cloned.getBase64Async('image/png');
+          const debugFloorImg = document.getElementById(
+            'debug-floor',
+          ) as HTMLImageElement;
+          if (debugFloorImg) {
+            debugFloorImg.src = await cloned.getBase64Async('image/png');
+          }
 
           const blob = await cloned.getBufferAsync('image/png');
           const res = await ocr!.recognize(blob);
@@ -258,7 +264,9 @@ export const OZ = () => {
           );
         })
         .finally(() => {
-          captureFrameTimeout.current = setTimeout(captureFrame, TIMEOUT);
+          if (videoRef.current?.srcObject) {
+            captureFrameTimeout.current = setTimeout(captureFrame, TIMEOUT);
+          }
         });
     };
     captureFrame();
