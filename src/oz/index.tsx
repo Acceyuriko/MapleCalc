@@ -3,6 +3,7 @@ import { Button, Spin, message } from 'antd';
 import type { Rectangle, Worker } from 'tesseract.js';
 import Jimp from 'jimp/browser/lib/jimp';
 import { Rect } from './rect';
+import { useF22 } from './floors/useF22';
 import { useF23 } from './floors/useF23';
 import { useF24 } from './floors/useF24';
 import { useF39 } from './floors/useF39';
@@ -82,6 +83,10 @@ export const OZ = () => {
       return next;
     });
   }, []);
+
+  const f22 = useF22({
+    currentFloor,
+  });
 
   const f23 = useF23({
     currentFloor,
@@ -296,12 +301,13 @@ export const OZ = () => {
         <div className='floor'>
           Current Floor: {currentFloor} <img id='debug-floor' />
         </div>
+        {f22?.content}
         {f23?.slider}
         {f24.current?.content}
         {f39.current?.content}
         <Button onClick={stopCapture}>stop capture</Button>
       </div>
-      {stream && ![23, 48].includes(currentFloor) && (
+      {stream && (
         <div>
           <Button
             onClick={() => {
@@ -317,8 +323,7 @@ export const OZ = () => {
         className='video-container'
         style={{
           ...f23?.videoStyle,
-          display:
-            videoVisible || [23, 48].includes(currentFloor) ? 'flex' : 'none',
+          display: videoVisible ? 'flex' : 'none',
         }}
       >
         <video ref={videoRef} autoPlay onPlay={onVideoStart} />
