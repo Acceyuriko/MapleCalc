@@ -12,7 +12,6 @@ import './index.less';
 
 const KEY_RECT_SETTINGS = 'oz_rect_settings';
 const TIMEOUT = 1000;
-const VIDEO_WIDTH = 1366;
 
 export interface RectSettings {
   floor: Rectangle;
@@ -197,10 +196,12 @@ export const OZ = () => {
   const onVideoStart = useCallback(() => {
     const video = videoRef.current!;
     const canvas = canvasRef.current!;
-    canvas.width = VIDEO_WIDTH;
-    canvas.height = (video.videoHeight * VIDEO_WIDTH) / video.videoWidth;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
     video.style.width = canvas.width + 'px';
     video.style.height = canvas.height + 'px';
+    video.parentElement!.style.width = video.style.width;
+    video.parentElement!.style.height = video.style.height;
 
     const captureFrame = () => {
       canvas
@@ -320,12 +321,7 @@ export const OZ = () => {
             videoVisible || [23, 48].includes(currentFloor) ? 'flex' : 'none',
         }}
       >
-        <video
-          ref={videoRef}
-          style={{ width: VIDEO_WIDTH }}
-          autoPlay
-          onPlay={onVideoStart}
-        />
+        <video ref={videoRef} autoPlay onPlay={onVideoStart} />
         <Rect
           name='floor rectangle'
           container='video-container'
