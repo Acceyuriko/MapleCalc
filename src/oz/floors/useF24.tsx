@@ -45,6 +45,7 @@ export const useF24 = ({
             rect.height,
           );
 
+          await promisify(image.scale.bind(image))(3);
           await promisify(image.invert.bind(image))();
           await promisify(image.threshold.bind(image))({
             max: 100,
@@ -100,6 +101,7 @@ export const useF24 = ({
             <Divider />
             <Table
               dataSource={TEXT_CLUE_24}
+              rowKey={(row) => row.question}
               columns={[
                 {
                   title: 'question',

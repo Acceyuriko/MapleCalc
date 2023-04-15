@@ -24,6 +24,11 @@ export const TEXT_CLUE_24 = [
   },
   {
     question:
+      'Feels like fairies would be sleeping beneath a tree among beautiful flowers.',
+    answer: 'Elluel',
+  },
+  {
+    question:
       'Feels like a place where Shinsoo and the Empress lean against each other in a beautiful garden and rest on a languid afternoon.',
     answer: 'Ereve',
   },
