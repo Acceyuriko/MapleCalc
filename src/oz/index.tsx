@@ -8,6 +8,7 @@ import { useF23 } from './floors/useF23';
 import { useF24 } from './floors/useF24';
 import { useF36 } from './floors/useF36';
 import { useF39 } from './floors/useF39';
+import { useF48 } from './floors/useF48';
 import { promisify } from '../utils/helper';
 
 import './index.less';
@@ -21,6 +22,7 @@ export interface RectSettings {
   map23: Rectangle;
   text24: Rectangle;
   text39: Rectangle;
+  map48: Rectangle;
 }
 
 export const OZ = () => {
@@ -57,6 +59,12 @@ export const OZ = () => {
       left: 580,
       width: 342,
       height: 171,
+    },
+    map48: {
+      top: 64,
+      left: 26,
+      width: 278,
+      height: 126,
     },
     ...(localStorage.getItem(KEY_RECT_SETTINGS)
       ? JSON.parse(localStorage.getItem(KEY_RECT_SETTINGS)!)
@@ -125,6 +133,18 @@ export const OZ = () => {
       },
       [onRectSettingsChange],
     ),
+  });
+
+  const f48 = useF48({
+    currentFloor,
+    map: rectSettings.map48,
+    videoScale: rectSettings.videoScale,
+    onSliderChange: (value) => {
+      onRectSettingsChange({ videoScale: value });
+    },
+    onRectChange: (value) => {
+      onRectSettingsChange({ map48: value });
+    },
   });
 
   const startCapture = useCallback(() => {
@@ -311,6 +331,7 @@ export const OZ = () => {
         {f24.current?.content}
         {f36?.content}
         {f39.current?.content}
+        {f48?.slider}
         <Button onClick={stopCapture}>stop capture</Button>
       </div>
       {stream && (
@@ -329,6 +350,7 @@ export const OZ = () => {
         className='video-container'
         style={{
           ...f23?.videoStyle,
+          ...f48?.videoStyle,
           display: videoVisible ? 'flex' : 'none',
         }}
       >
@@ -346,6 +368,7 @@ export const OZ = () => {
         {f23?.videoDecorator}
         {f24.current?.videoDecorator}
         {f39.current?.videoDecorator}
+        {f48?.videoDecorator}
       </div>
       <canvas id='canvas' ref={canvasRef} />
     </div>
