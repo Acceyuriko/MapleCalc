@@ -6,6 +6,7 @@ import { Rect } from './rect';
 import { useF22 } from './floors/useF22';
 import { useF23 } from './floors/useF23';
 import { useF24 } from './floors/useF24';
+import { useF36 } from './floors/useF36';
 import { useF39 } from './floors/useF39';
 import { promisify } from '../utils/helper';
 
@@ -109,6 +110,10 @@ export const OZ = () => {
       },
       [onRectSettingsChange],
     ),
+  });
+
+  const f36 = useF36({
+    currentFloor,
   });
 
   const f39 = useF39({
@@ -304,6 +309,7 @@ export const OZ = () => {
         {f22?.content}
         {f23?.slider}
         {f24.current?.content}
+        {f36?.content}
         {f39.current?.content}
         <Button onClick={stopCapture}>stop capture</Button>
       </div>
