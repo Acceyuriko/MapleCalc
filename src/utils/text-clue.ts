@@ -354,7 +354,7 @@ export const TEXT_CLUE_39 = [
   },
   {
     question: 'This room is not open to the public.',
-    answer: ['Olson'],
+    answer: ['Olson', 'Olson the Toy Soldier'],
   },
   {
     question: 'We must work together.',
