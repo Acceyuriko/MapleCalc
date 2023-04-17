@@ -114,7 +114,7 @@ export const useF39 = ({
           setAnswer(
             options.map((i, index) => (
               <React.Fragment key={i}>
-                <Typography.Text code={index === matchedAnswer.index}>
+                <Typography.Text mark={index === matchedAnswer.index}>
                   {i}
                 </Typography.Text>
                 <br />
