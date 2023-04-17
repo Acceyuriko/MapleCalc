@@ -1,6 +1,6 @@
-import React from 'react';
-import type { Rectangle } from 'tesseract.js';
-import { Tooltip } from 'antd';
+import React, { useCallback } from 'react';
+import { Rectangle } from 'tesseract.js';
+import { Popover, InputNumber, Form } from 'antd';
 import './index.less';
 
 export interface props {
@@ -18,8 +18,112 @@ export const Rect = ({
   onChange,
   container,
 }: props) => {
+  const onTopChange = useCallback(
+    (value: number) => {
+      const nextTop = Math.max(0, Math.min(value, top + height - LINE_WIDTH));
+
+      onChange({
+        top: nextTop,
+        left,
+        width,
+        height: height - (nextTop - top),
+      });
+    },
+    [onChange, top, left, width, height],
+  );
+
+  const onLeftChange = useCallback(
+    (value: number) => {
+      const nextLeft = Math.max(0, Math.min(value, left + width - LINE_WIDTH));
+
+      onChange({
+        top,
+        left: nextLeft,
+        width: width - (nextLeft - left),
+        height,
+      });
+    },
+    [onChange, top, left, width, height],
+  );
+
+  const onHeightChange = useCallback(
+    (value: number) => {
+      const nextHeight = Math.max(
+        0,
+        Math.min(
+          document.getElementById(container)!.offsetHeight - LINE_WIDTH,
+          value,
+        ),
+      );
+      onChange({
+        top,
+        left,
+        width,
+        height: nextHeight,
+      });
+    },
+    [container, onChange, top, left, width],
+  );
+
+  const onWidthChange = useCallback(
+    (value: number) => {
+      const nextWidth = Math.max(
+        0,
+        Math.min(
+          document.getElementById(container)!.offsetWidth - LINE_WIDTH,
+          value,
+        ),
+      );
+      onChange({
+        top,
+        left,
+        width: nextWidth,
+        height,
+      });
+    },
+    [container, height, left, onChange, top],
+  );
+
   return (
-    <Tooltip title={name}>
+    <Popover
+      trigger='click'
+      content={
+        <Form layout='inline' title={name}>
+          <Form.Item label='top'>
+            <InputNumber
+              value={top}
+              onChange={(value) => {
+                onTopChange(value!);
+              }}
+            />
+          </Form.Item>
+          <Form.Item label='left'>
+            <InputNumber
+              value={left}
+              onChange={(value) => {
+                onLeftChange(value!);
+              }}
+            />
+          </Form.Item>
+          <Form.Item label='width'>
+            <InputNumber
+              value={width}
+              onChange={(value) => {
+                onWidthChange(value!);
+              }}
+            />
+          </Form.Item>
+          <Form.Item label='height'>
+            <InputNumber
+              value={height}
+              onChange={(value) => {
+                onHeightChange(value!);
+              }}
+            />
+          </Form.Item>
+        </Form>
+      }
+    >
       <div className='rect' style={{ top, left, width, height }}>
         <div
           className='line top'
@@ -27,16 +131,7 @@ export const Rect = ({
           onMouseDown={(e) => {
             const start = e.clientY;
             const onMouseMove = (e: MouseEvent) => {
-              const nextTop = Math.max(
-                0,
-                Math.min(top + e.clientY - start, top + height - LINE_WIDTH),
-              );
-              onChange({
-                top: nextTop,
-                left,
-                width,
-                height: height - (nextTop - top),
-              });
+              onTopChange(top + e.clientY - start);
             };
 
             const onMouseUp = () => {
@@ -54,19 +149,7 @@ export const Rect = ({
           onMouseDown={(e) => {
             const start = e.clientY;
             const onMouseMove = (e: MouseEvent) => {
-              const nextHeight = Math.max(
-                0,
-                Math.min(
-                  document.getElementById(container)!.offsetHeight - LINE_WIDTH,
-                  height + e.clientY - start,
-                ),
-              );
-              onChange({
-                top,
-                left,
-                width,
-                height: nextHeight,
-              });
+              onHeightChange(height + e.clientY - start);
             };
 
             const onMouseUp = () => {
@@ -84,16 +167,7 @@ export const Rect = ({
           onMouseDown={(e) => {
             const start = e.clientX;
             const onMouseMove = (e: MouseEvent) => {
-              const nextLeft = Math.max(
-                0,
-                Math.min(left + e.clientX - start, left + width - LINE_WIDTH),
-              );
-              onChange({
-                top,
-                left: nextLeft,
-                width: width - (nextLeft - left),
-                height,
-              });
+              onLeftChange(left + e.clientX - start);
             };
 
             const onMouseUp = () => {
@@ -111,19 +185,7 @@ export const Rect = ({
           onMouseDown={(e) => {
             const start = e.clientX;
             const onMouseMove = (e: MouseEvent) => {
-              const nextWidth = Math.max(
-                0,
-                Math.min(
-                  document.getElementById(container)!.offsetWidth - LINE_WIDTH,
-                  width + e.clientX - start,
-                ),
-              );
-              onChange({
-                top,
-                left,
-                width: nextWidth,
-                height,
-              });
+              onWidthChange(width + e.clientX - start);
             };
 
             const onMouseUp = () => {
@@ -136,6 +198,6 @@ export const Rect = ({
           }}
         />
       </div>
-    </Tooltip>
+    </Popover>
   );
 };

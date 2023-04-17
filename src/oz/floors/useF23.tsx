@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Rectangle } from 'tesseract.js';
-import { Slider } from 'antd';
+import { Slider, Form } from 'antd';
 import { Rect } from '../rect';
 import FLOOR_23 from '../../images/floor23.png';
 
@@ -18,14 +18,16 @@ export const useF23 = ({
   onRectChange: (value: Rectangle) => void;
 }) => {
   const slider = (
-    <Slider
-      style={{ width: 320 }}
-      defaultValue={videoScale}
-      step={0.1}
-      min={1}
-      max={10}
-      onChange={onSliderChange}
-    />
+    <Form.Item label='scale ratio'>
+      <Slider
+        style={{ width: 320 }}
+        defaultValue={videoScale}
+        step={0.1}
+        min={1}
+        max={10}
+        onChange={onSliderChange}
+      />
+    </Form.Item>
   );
 
   const videoDecorator = (
