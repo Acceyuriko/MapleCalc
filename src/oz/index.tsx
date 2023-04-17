@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Spin, Typography, message } from 'antd';
+import { Button, Spin, Typography, Form, message, Slider } from 'antd';
 import type { Rectangle, Worker } from 'tesseract.js';
 import Jimp from 'jimp/browser/lib/jimp';
 import { Rect } from './rect';
@@ -14,11 +14,11 @@ import { promisify } from '../utils/helper';
 import './index.less';
 
 const KEY_RECT_SETTINGS = 'oz_rect_settings';
-const TIMEOUT = 1000;
 
 const { Paragraph, Text } = Typography;
 
 export interface RectSettings {
+  rcInterval: number;
   floor: Rectangle;
   videoScale: number;
   map23: Rectangle;
@@ -37,6 +37,7 @@ export const OZ = () => {
   const [videoVisible, setVideoVisible] = useState(true);
 
   const [rectSettings, setRectSettings] = useState<RectSettings>({
+    rcInterval: 1000,
     floor: {
       top: 58,
       left: 705,
@@ -298,7 +299,10 @@ export const OZ = () => {
         })
         .finally(() => {
           if (videoRef.current?.srcObject) {
-            captureFrameTimeout.current = setTimeout(captureFrame, TIMEOUT);
+            captureFrameTimeout.current = setTimeout(
+              captureFrame,
+              rectSettingsRef.current.rcInterval,
+            );
           }
         });
     };
@@ -319,12 +323,20 @@ export const OZ = () => {
       <div className='oz'>
         <Button onClick={startCapture}>start capture</Button>
         <Paragraph>
-          点击 <Text mark>start capture</Text>， 选择冒冒分享，开始体验。
+          点击 <Text code>start capture</Text>， 选择冒冒分享，开始体验。
         </Paragraph>
         <Paragraph>
-          视频上有用于识别楼层的红框，拖动红框边缘以选中楼层，包含{' '}
-          <Text mark>Undersea 99F</Text> 字样即可。
-          点击红框边缘，会出现编辑框，用于微调红框位置。
+          <ul>
+            <li>
+              视频上有用于识别楼层的红框，拖动红框边缘以选中楼层，包含{' '}
+              <Text code>Undersea 99F</Text> 字样即可。
+              点击红框边缘，会出现编辑框，用于微调红框位置。
+            </li>
+            <li>
+              拖动<Text code> recognization interval </Text>
+              滑块，调整识别频率，单位是毫秒，时间越短识别响应越快，消耗资源越多，请量力而行。
+            </li>
+          </ul>
         </Paragraph>
       </div>
     );
@@ -342,6 +354,19 @@ export const OZ = () => {
         {f36?.content}
         {f39.current?.content}
         {f48?.content}
+        <Form.Item label='recognization interval'>
+          <Slider
+            style={{ width: '100%' }}
+            min={100}
+            max={3000}
+            value={rectSettings.rcInterval}
+            onChange={(value) => {
+              onRectSettingsChange({
+                rcInterval: value,
+              });
+            }}
+          />
+        </Form.Item>
         <Button onClick={stopCapture}>stop capture</Button>
       </div>
       {stream && (

@@ -34,7 +34,7 @@ export const useF48 = ({
           <ul>
             <li>需调节小地图上的红框，使其与冒冒的小地图对齐。</li>
             <li>
-              调节 <Typography.Text mark>scale ratio</Typography.Text>{' '}
+              调节 <Typography.Text code>scale ratio</Typography.Text>{' '}
               可以调节视频的放大倍率。
             </li>
           </ul>
