@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Spin, message } from 'antd';
+import { Button, Spin, Typography, message } from 'antd';
 import type { Rectangle, Worker } from 'tesseract.js';
 import Jimp from 'jimp/browser/lib/jimp';
 import { Rect } from './rect';
@@ -15,6 +15,8 @@ import './index.less';
 
 const KEY_RECT_SETTINGS = 'oz_rect_settings';
 const TIMEOUT = 1000;
+
+const { Paragraph, Text } = Typography;
 
 export interface RectSettings {
   floor: Rectangle;
@@ -316,6 +318,14 @@ export const OZ = () => {
     return (
       <div className='oz'>
         <Button onClick={startCapture}>start capture</Button>
+        <Paragraph>
+          点击 <Text mark>start capture</Text>， 选择冒冒分享，开始体验。
+        </Paragraph>
+        <Paragraph>
+          视频上有用于识别楼层的红框，拖动红框边缘以选中楼层，包含{' '}
+          <Text mark>Undersea 99F</Text> 字样即可。
+          点击红框边缘，会出现编辑框，用于微调红框位置。
+        </Paragraph>
       </div>
     );
   }
@@ -327,11 +337,11 @@ export const OZ = () => {
           Current Floor: {currentFloor} <img id='debug-floor' />
         </div>
         {f22?.content}
-        {f23?.slider}
+        {f23?.content}
         {f24.current?.content}
         {f36?.content}
         {f39.current?.content}
-        {f48?.slider}
+        {f48?.content}
         <Button onClick={stopCapture}>stop capture</Button>
       </div>
       {stream && (
