@@ -100,6 +100,7 @@ export const useF39 = ({
                 if (dist < next.distance) {
                   next.index = index;
                   next.distance = dist;
+                  next.text = i;
                 }
               });
 
@@ -108,18 +109,26 @@ export const useF39 = ({
             {
               index: -1,
               distance: Number.POSITIVE_INFINITY,
+              text: '',
             },
           );
 
           setAnswer(
-            options.map((i, index) => (
-              <React.Fragment key={i}>
-                <Typography.Text mark={index === matchedAnswer.index}>
-                  {i}
-                </Typography.Text>
-                <br />
-              </React.Fragment>
-            )),
+            <>
+              <div>
+                <Typography.Text>{matchedAnswer.text}</Typography.Text>
+              </div>
+              <div>
+                {options.map((i, index) => (
+                  <React.Fragment key={i}>
+                    <Typography.Text mark={index === matchedAnswer.index}>
+                      {i}
+                    </Typography.Text>
+                    <br />
+                  </React.Fragment>
+                ))}
+              </div>
+            </>,
           );
         },
         content: (

@@ -152,7 +152,7 @@ export const OZ = () => {
 
   const startCapture = useCallback(() => {
     navigator.mediaDevices
-      .getDisplayMedia({ video: true, audio: false })
+      .getDisplayMedia({ video: { frameRate: 60 }, audio: false })
       .then((s) => {
         setStream(s);
         const track = s.getVideoTracks()[0];

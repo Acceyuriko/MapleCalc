@@ -131,12 +131,12 @@ export const useF36 = ({ currentFloor }: { currentFloor: number }) => {
         </Button>
         <Space>
           {sequence.map((monster, index) => (
-            <>
-              <div key={index}>{monster}</div>
+            <React.Fragment key={index}>
+              <div>{monster}</div>
               {(index + 1) % 4 === 0 && (
                 <div className='spacer' style={{ width: 48 }} />
               )}
-            </>
+            </React.Fragment>
           ))}
         </Space>
         <Divider />
