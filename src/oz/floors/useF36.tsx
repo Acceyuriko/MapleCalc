@@ -4,6 +4,11 @@ import { Space, Button, Divider, Card, Typography } from 'antd';
 const MONSTERS = [
   <Card
     key='1'
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}
     cover={
       <img
         style={{ padding: 12, width: 72, height: 72 }}
@@ -11,10 +16,21 @@ const MONSTERS = [
       />
     }
   >
-    <Card.Meta title='1' />
+    <Card.Meta
+      title={
+        <Typography.Title code level={3}>
+          1
+        </Typography.Title>
+      }
+    />
   </Card>,
   <Card
     key='2'
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}
     cover={
       <img
         style={{ padding: 12, width: 72, height: 72 }}
@@ -22,10 +38,21 @@ const MONSTERS = [
       />
     }
   >
-    <Card.Meta title='2' />
+    <Card.Meta
+      title={
+        <Typography.Title code level={3}>
+          2
+        </Typography.Title>
+      }
+    />
   </Card>,
   <Card
     key='3'
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}
     cover={
       <img
         style={{ padding: 12, width: 72, height: 72 }}
@@ -33,10 +60,21 @@ const MONSTERS = [
       />
     }
   >
-    <Card.Meta title='3' />
+    <Card.Meta
+      title={
+        <Typography.Title code level={3}>
+          3
+        </Typography.Title>
+      }
+    />
   </Card>,
   <Card
     key='4'
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}
     cover={
       <img
         style={{ padding: 12, width: 72, height: 72 }}
@@ -44,7 +82,13 @@ const MONSTERS = [
       />
     }
   >
-    <Card.Meta title='4' />
+    <Card.Meta
+      title={
+        <Typography.Title code level={3}>
+          4
+        </Typography.Title>
+      }
+    />
   </Card>,
 ];
 
