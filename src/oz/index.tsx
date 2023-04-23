@@ -323,7 +323,8 @@ export const OZ = () => {
       <div className='oz'>
         <Button onClick={startCapture}>start capture</Button>
         <Paragraph>
-          点击 <Text code>start capture</Text>， 选择冒冒分享，开始体验。
+          点击 <Text code>start capture</Text>， 选择{' '}
+          <Text code>Window/窗口</Text> -&gt; 冒冒 -&gt; 分享，开始体验。
         </Paragraph>
         <Paragraph>
           <ul>
