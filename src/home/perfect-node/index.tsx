@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { uniq, groupBy } from 'lodash';
 import { Row, Col, List, Input, Button, message } from 'antd';
 
-import './index.less';
-
 export interface Props {
   nodes: string[][];
   onNodesChange: (nodes: string[][]) => void;

@@ -1,13 +1,42 @@
 import React, { useState, useCallback } from 'react';
 import { Row, Col, Tabs, Select, Modal, Form, Input, Button } from 'antd';
 import { PerfectNode } from './perfect-node';
+import { Promotion } from './promotion';
 
 import './index.less';
+
+export interface PromotionItem {
+  type: string;
+  value: number;
+}
+
+export interface BasePromotionItem {
+  amount: number;
+  promotion: number;
+}
+
+export interface BaseInfo {
+  zero: number;
+  attPer: number;
+  att: BasePromotionItem;
+  stat: BasePromotionItem;
+  statPer: BasePromotionItem;
+  ied: number;
+  boss: number;
+  crit: number;
+  range: number;
+}
 
 export interface Charactor {
   id: number;
   name: string;
   nodes?: string[][];
+  promotion?: {
+    potential: { name: string; items: PromotionItem[] }[];
+    bonusPotential: { name: string; items: PromotionItem[] }[];
+    flame: { name: string; items: PromotionItem[] }[];
+    base?: BaseInfo;
+  };
 }
 
 const KEY_CHARACTOR = 'charactors';
@@ -93,6 +122,7 @@ export const Home = () => {
       </Row>
       {charactor && (
         <Tabs
+          key={charactor.id}
           defaultActiveKey='perfect-node'
           items={[
             {
@@ -103,6 +133,24 @@ export const Home = () => {
                   nodes={charactor.nodes ?? []}
                   onNodesChange={(nodes) => {
                     charactor.nodes = nodes;
+                    setCharactors([...charactors]);
+                  }}
+                />
+              ),
+            },
+            {
+              label: '提升',
+              key: 'promotion',
+              children: (
+                <Promotion
+                  promotion={{
+                    potential: [],
+                    bonusPotential: [],
+                    flame: [],
+                    ...charactor.promotion,
+                  }}
+                  onPromotionChange={(promotion) => {
+                    charactor.promotion = promotion;
                     setCharactors([...charactors]);
                   }}
                 />
