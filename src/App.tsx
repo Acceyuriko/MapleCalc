@@ -11,6 +11,7 @@ import { Home } from './home';
 import { FindDiff } from './find-diff';
 import { OZ } from './oz';
 import './App.less';
+import { FZ } from './fz';
 
 const routes: (RouteObject & { name?: string })[] = [
   {
@@ -27,6 +28,11 @@ const routes: (RouteObject & { name?: string })[] = [
     name: '爬塔',
     path: '/oz',
     element: <OZ />,
+  },
+  {
+    name: '卖轮',
+    path: '/fz',
+    element: <FZ />,
   },
 ];
 
