@@ -7,6 +7,7 @@ import {
   Form,
   Input,
   Select,
+  Progress,
   message,
 } from 'antd';
 import fuzzy from 'fuzzy';
@@ -20,6 +21,7 @@ export interface FzUser {
   name?: string;
   duration: number;
   start: number;
+  castTime?: number;
 }
 
 const KEY_FZ_USERS = 'fz_users';
@@ -58,7 +60,7 @@ export const FZ = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setUpdate((pre) => pre + 1);
-    }, 10000);
+    }, 1000);
     return () => {
       clearInterval(interval);
     };
@@ -126,6 +128,37 @@ export const FZ = () => {
                 </Button>
               </Space>
             ),
+          },
+          {
+            title: '10 min',
+            render: (row: FzUser) => {
+              let remainTime = 0;
+              const max = 10 * 60 * 1000;
+              if (row.castTime) {
+                remainTime = Math.max(max - (Date.now() - row.castTime), 0);
+              }
+              return (
+                <Space>
+                  <Progress
+                    style={{ width: 200 }}
+                    size='small'
+                    percent={(remainTime / max) * 100}
+                    format={() => {
+                      const seconds = Math.floor(remainTime / 1000);
+                      return `${Math.floor(seconds / 60)}:${seconds % 60}`;
+                    }}
+                  />
+                  <Button
+                    onClick={() => {
+                      row.castTime = Date.now();
+                      setData([...data]);
+                    }}
+                  >
+                    cast
+                  </Button>
+                </Space>
+              );
+            },
           },
           {
             title: 'duration',
@@ -305,6 +338,7 @@ export const FZ = () => {
             setIsMapModalVisible(false);
           }}
           maskClosable={false}
+          closable={false}
           cancelButtonProps={{ style: { display: 'none' } }}
         >
           <Select
