@@ -222,6 +222,7 @@ export const FZ = () => {
           open
           maskClosable={false}
           onCancel={() => {
+            setSelected(undefined);
             setIsUserModalVisible(false);
           }}
           onOk={() => {
@@ -271,7 +272,12 @@ export const FZ = () => {
               });
           }}
         >
-          <Form form={form} initialValues={selected} labelCol={{ span: 6 }}>
+          <Form
+            form={form}
+            preserve={false}
+            initialValues={selected}
+            labelCol={{ span: 6 }}
+          >
             <Form.Item label='name' name='name'>
               <Input />
             </Form.Item>
