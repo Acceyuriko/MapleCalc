@@ -64,10 +64,10 @@ export const OZ = () => {
       height: 171,
     },
     map48: {
-      top: 37,
-      left: 10,
-      width: 258,
-      height: 152,
+      top: 87,
+      left: 17,
+      width: 236,
+      height: 89,
     },
     ...(localStorage.getItem(KEY_RECT_SETTINGS)
       ? JSON.parse(localStorage.getItem(KEY_RECT_SETTINGS)!)
