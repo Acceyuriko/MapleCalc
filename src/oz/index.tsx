@@ -200,6 +200,9 @@ export const OZ = () => {
   useEffect(() => {
     window.Tesseract.createWorker({
       logger: () => undefined,
+      corePath: '/tesseract-core-simd.wasm.js',
+      workerPath: '/worker.min.js',
+      langPath: '/',
     })
       .then(async (worker) => {
         await worker.loadLanguage('eng');
